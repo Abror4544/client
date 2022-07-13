@@ -7,7 +7,7 @@ import Header from "../components/Header/Header";
 function MyApp({ Component, pageProps }: AppProps) {
 
   return (
-    <SessionProvider>
+    <SessionProvider session={pageProps.session}>
       <ChakraProvider>
         <Header />
         <Component {...pageProps} />

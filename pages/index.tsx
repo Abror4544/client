@@ -20,6 +20,12 @@ interface Todos {
   }[];
 }
 
+interface ISessionProps {
+  id: number;
+  name: string;
+  email: string;
+}
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const todos = await prisma.todo.findMany({
     select: {
@@ -48,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const Home = ({ todos }: Todos) => {
+const Home = ({ todos }: Todos, session: ISessionProps) => {
 
   const [form, setForm] = useState<FormData>({ title: "", text: "", id: "" });
 
