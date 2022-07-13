@@ -10,11 +10,12 @@ const ColorModeSwitcher = () => {
     <IconButton
       size="md"
       fontSize="lg"
-      aria-label={`Swich to ${text} mode`}
+      aria-label={`Switch to ${text} mode`}
       variant="ghost"
       color="current"
       ml="2"
       onClick={toggleColorMode}
+      data-testid="switchBtn"
       icon={<SwitchIcon />}
     />
   );

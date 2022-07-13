@@ -9,13 +9,19 @@ const Header = () => {
   const router = useRouter();
 
   return (
-    <Box as="header">
+    <Box data-testid="headerTest" as="header">
       <Container maxW="container.lg">
         <Flex alignItems="center" justifyContent="space-between">
-          <ColorModeSwitcher justify-self="flex-end" />
-          <Text fontSize="lg">{session?.user?.name}</Text>
+          <ColorModeSwitcher justify-self="flex-end" data-testid="headerTest" />
+          <Text fontSize="lg">
+            {session?.user?.name}
+          </Text>
           {session ? (
-            <Text cursor="pointer" onClick={() => signOut()} fontSize="lg">
+            <Text
+              cursor="pointer"
+              onClick={() => signOut()}
+              fontSize="lg"
+            >
               Logout
             </Text>
           ) : (

@@ -5,7 +5,6 @@ import { SessionProvider } from "next-auth/react";
 import Header from "../components/Header/Header";
 
 function MyApp({ Component, pageProps }: AppProps) {
-
   return (
     <SessionProvider session={pageProps.session}>
       <ChakraProvider>

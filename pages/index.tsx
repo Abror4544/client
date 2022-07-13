@@ -5,14 +5,13 @@ import { prisma } from "../lib/prisma";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
-
 type FormData = {
   title: string;
   text: string;
   id: string;
 };
 
-interface Todos {
+export interface ITodos {
   todos: {
     id: string;
     title: string;
@@ -54,8 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const Home = ({ todos }: Todos, session: ISessionProps) => {
-
+const Home = ({ todos }: ITodos, session: ISessionProps) => {
   const [form, setForm] = useState<FormData>({ title: "", text: "", id: "" });
 
   const router = useRouter();
@@ -115,11 +113,11 @@ const Home = ({ todos }: Todos, session: ISessionProps) => {
   };
 
   return (
-    <div>
+    <main>
       <Head>
         <title>ToDo - Fullstack</title>
       </Head>
-      <h1 className="text-center font-bold text-2xl mt-4">Todos</h1>
+      <h1 className="text-center font-bold text-2xl mt-4" data-testid="heading">Todos</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -172,7 +170,7 @@ const Home = ({ todos }: Todos, session: ISessionProps) => {
           ))}
         </ul>
       </div>
-    </div>
+    </main>
   );
 };
 
