@@ -18,8 +18,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Login = (csrfToken: IToken) => {
-  console.log(csrfToken);
-
   return (
     <>
       <Head>

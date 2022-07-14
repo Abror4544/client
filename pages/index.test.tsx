@@ -6,12 +6,16 @@ import {
   getByPlaceholderText,
   getByText,
   getAllByTestId,
+  fireEvent,
 } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Home from "./index";
 import userEvent from "@testing-library/user-event";
+import mockAxios from "axios";
 
 const data = [{ id: "2", title: "Rest", text: "Take care" }];
+
+const mockedAxios = mockAxios as jest.Mocked<typeof mockAxios>;
 
 afterEach(cleanup);
 
@@ -52,7 +56,7 @@ describe("Home", () => {
     expect(textarea).not.toBeDisabled();
   });
 
-  it("Correct working button", async () => {
+  it("Correct working add button", async () => {
     const { container } = render(<Home todos={data} />);
 
     const button = getByText(container, "Add +");
@@ -76,9 +80,39 @@ describe("Home", () => {
     expect(getByText(container, "Edit")).toBeInTheDocument();
   });
 
+  it("Edit button functionality", () => {
+    const { container } = render(<Home todos={data} />);
+
+    const editBtn = getByText(container, "Edit");
+
+    const input = getByTestId(container, "testInput");
+
+    const textarea = getByTestId(container, "testTextarea");
+
+    fireEvent.click(editBtn);
+
+    expect(input).toHaveValue(data[0].title);
+
+    expect(textarea).toHaveValue(data[0].text);
+  });
+
   it("Delete button", async () => {
     const { container } = render(<Home todos={data} />);
 
     expect(getByText(container, "X")).toBeInTheDocument();
+  });
+
+  it("Delete button functionality", async () => {
+    const { container } = render(<Home todos={data} />);
+
+    const deleteBtn = getByText(container, "X");
+
+    const listItem = getByTestId(container, "todoList");
+
+    fireEvent.click(deleteBtn);
+
+    expect(listItem).not.toBeInTheDocument();
+
+    expect(data).toHaveLength(0);
   });
 });

@@ -12,12 +12,12 @@ import {
   Input,
   Stack,
   Text,
-  useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import * as React from "react";
 import { IToken } from "../../pages/login";
+import { PasswordField } from "../PasswordField/PasswordField";
 
 const Auth = (csrfToken: IToken) => {
   return (
@@ -29,15 +29,13 @@ const Auth = (csrfToken: IToken) => {
       <Stack spacing="8">
         <Stack spacing="6">
           <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
-            <Heading size={useBreakpointValue({ base: "xs", md: "sm" })}>
-              Login
-            </Heading>
+            <Heading size={{ base: "xs", md: "sm" }}>Login</Heading>
           </Stack>
         </Stack>
         <Box
           py={{ base: "0", sm: "8" }}
           px={{ base: "4", sm: "10" }}
-          bg={useBreakpointValue({ base: "transparent", sm: "bg-surface" })}
+          bg={{ base: "transparent", sm: "bg-surface" }}
           boxShadow={{ base: "none", sm: useColorModeValue("md", "md-dark") }}
           borderRadius={{ base: "none", sm: "xl" }}
         >
@@ -61,15 +59,7 @@ const Auth = (csrfToken: IToken) => {
                 </FormControl>
               </Stack>
               <Stack spacing="5">
-                <FormControl>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <Input
-                    name="password"
-                    id="input-password-for-credentials-provider"
-                    type="password"
-                    required
-                  />
-                </FormControl>
+                <PasswordField />
               </Stack>
               <HStack justify="space-between">
                 <Checkbox defaultChecked>Remember me</Checkbox>

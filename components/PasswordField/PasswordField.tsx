@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   FormControl,
   FormLabel,
@@ -33,7 +34,13 @@ export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>(
             <IconButton
               variant="link"
               aria-label={isOpen ? "Mask password" : "Reveal password"}
-              icon={isOpen ? <HiEyeOff /> : <HiEye />}
+              icon={
+                isOpen ? (
+                  <HiEyeOff data-testid="off" />
+                ) : (
+                  <HiEye data-testid="on" />
+                )
+              }
               onClick={onClickReveal}
             />
           </InputRightElement>
@@ -41,9 +48,9 @@ export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>(
             id="password"
             ref={mergeRef}
             name="password"
+            required
             type={isOpen ? "text" : "password"}
             autoComplete="current-password"
-            required
             {...props}
           />
         </InputGroup>

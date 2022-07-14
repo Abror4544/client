@@ -1,27 +1,49 @@
+import React from "react";
 import { Box, Container, Flex, Text } from "@chakra-ui/react";
 import ColorModeSwitcher from "../ColorModeSwitcher/ColorModeSwitcher";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
-const Header = () => {
-  const { data: session } = useSession();
+interface IUser {
+  name: string;
+  email: string;
+}
 
+interface IProps {
+  user: IUser;
+  expires: string;
+  id: number;
+}
+
+export interface ISession {
+  session: IProps | null;
+}
+
+const Header = (session: ISession) => {
   const router = useRouter();
 
   return (
-    <Box data-testid="headerTest" as="header">
+    <Box as="header">
       <Container maxW="container.lg">
         <Flex alignItems="center" justifyContent="space-between">
-          <ColorModeSwitcher justify-self="flex-end" data-testid="headerTest" />
-          <Text fontSize="lg">{session?.user?.name}</Text>
-          {session ? (
-            <Text cursor="pointer" onClick={() => signOut()} fontSize="lg">
+          <ColorModeSwitcher justify-self="flex-end" />
+          <Text data-testid="name" fontSize="lg">
+            {session?.session?.user?.name}
+          </Text>
+          {session.session ? (
+            <Text
+              data-testid="logstatus"
+              cursor="pointer"
+              onClick={() => signOut()}
+              fontSize="lg"
+            >
               Logout
             </Text>
           ) : (
             <Text
+              data-testid="logstatus"
               cursor="pointer"
-              onClick={() => router.push("/api/auth/signin")}
+              onClick={() => router.push("/login")}
               fontSize="lg"
             >
               Sign in

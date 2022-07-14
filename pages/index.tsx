@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { prisma } from "../lib/prisma";
 import { useRouter } from "next/router";
@@ -24,12 +24,6 @@ export interface ITodos {
     title: string;
     text: string;
   }[];
-}
-
-interface ISessionProps {
-  id: number;
-  name: string;
-  email: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -60,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const Home = ({ todos }: ITodos, session: ISessionProps) => {
+const Home = ({ todos }: ITodos) => {
   const [form, setForm] = useState<FormData>({ title: "", text: "", id: "" });
   const [errmsg, setErrMsg] = useState("");
 
@@ -144,12 +138,14 @@ const Home = ({ todos }: ITodos, session: ISessionProps) => {
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
           className="border-2 rounded border-gray-600 p-1"
+          data-testid="testInput"
           required
         />
         <textarea
           placeholder="Description"
           value={form.text}
           onChange={(e) => setForm({ ...form, text: e.target.value })}
+          data-testid="testTextarea"
           className="border-2 rounded border-gray-600 p-1"
         />
 
