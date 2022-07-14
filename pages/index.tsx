@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { prisma } from "../lib/prisma";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 import type { GetServerSideProps } from "next/types";
+import { Alert, AlertIcon, AlertTitle } from "@chakra-ui/react";
 
 type FormData = {
   title: string;
@@ -62,16 +63,18 @@ const Home = ({ todos }: ITodos, session: ISessionProps) => {
   const refreshData = () => {
     router.replace(router.asPath);
   };
-
   async function run(data: FormData) {
     if (data.id) {
       updateTodo(data);
     } else {
       try {
-        axios.post("http://localhost:3000/api/create", data).then(() => {
-          setForm({ title: "", text: "", id: "" });
-          refreshData();
-        });
+        axios
+          .post("http://localhost:3000/api/create", data)
+          .then(() => {
+            setForm({ title: "", text: "", id: "" });
+            refreshData();
+          })
+          .catch((error) => alert(error?.response.data.message));
       } catch (error) {
         console.log(error);
       }

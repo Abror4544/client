@@ -7,16 +7,20 @@ export default async function handler(
 ) {
   const { title, text } = req.body;
 
-  try {
-    await prisma.todo.create({
-      data: {
-        title,
-        text,
-      },
-    });
+  if (title !== "") {
+    try {
+      await prisma.todo.create({
+        data: {
+          title,
+          text,
+        },
+      });
 
-    res.status(200).json({ message: "Todo Created!" });
-  } catch (error) {
-    console.log("Failed!");
+      res.status(200).json({ message: "Todo Created!" });
+    } catch (error) {
+      console.log("Failed!");
+    }
+  } else {
+    res.status(400).json({ message: "Title can't be empty!" });
   }
 }
