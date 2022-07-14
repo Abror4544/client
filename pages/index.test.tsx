@@ -8,14 +8,14 @@ import {
   getAllByTestId,
 } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Home, { getServerSideProps } from "./index";
+import Home from "./index";
 import userEvent from "@testing-library/user-event";
-import type { GetServerSideProps } from "next/types";
+
+const data = [{ id: "2", title: "Rest", text: "Take care" }];
 
 afterEach(cleanup);
 
 describe("Home", () => {
-  const data = [{ id: "2", title: "Rest", text: "Take care" }];
   it("Renders without crash", () => {
     render(<Home todos={data} />);
   });
@@ -62,18 +62,13 @@ describe("Home", () => {
     expect(button).toBeInTheDocument();
   });
 
-  /* it("Correct list", async () => {
+  it("Correct list", async () => {
     const { container } = render(<Home todos={data} />);
-
-    jest.setTimeout(20000);
-
-    const mockData = await getServerSideProps<GetServerSideProps>({});
-    console.log(mockData);
 
     const list = getAllByTestId(container, "todoList");
 
     expect(list.length).toBe(1);
-  }); */
+  });
 
   it("Edit button", async () => {
     const { container } = render(<Home todos={data} />);

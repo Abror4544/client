@@ -33,23 +33,20 @@ interface ISessionProps {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  async function getTodos() {
-    return await prisma.todo.findMany({
-      select: {
-        title: true,
-        text: true,
-        id: true,
-      },
-    });
-  }
-  const todos = await getTodos();
+  const todos = await prisma.todo.findMany({
+    select: {
+      title: true,
+      text: true,
+      id: true,
+    },
+  });
 
   const session = await getSession(context);
 
   if (!session) {
     return {
       redirect: {
-        destination: "/api/auth/signin",
+        destination: "/login",
         permanent: false,
       },
     };
