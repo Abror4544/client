@@ -13,15 +13,9 @@ const Header = () => {
       <Container maxW="container.lg">
         <Flex alignItems="center" justifyContent="space-between">
           <ColorModeSwitcher justify-self="flex-end" data-testid="headerTest" />
-          <Text fontSize="lg">
-            {session?.user?.name}
-          </Text>
+          <Text fontSize="lg">{session?.user?.name}</Text>
           {session ? (
-            <Text
-              cursor="pointer"
-              onClick={() => signOut()}
-              fontSize="lg"
-            >
+            <Text cursor="pointer" onClick={() => signOut()} fontSize="lg">
               Logout
             </Text>
           ) : (

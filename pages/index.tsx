@@ -1,10 +1,11 @@
+import React, { useState } from "react";
 import axios from "axios";
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
 import { prisma } from "../lib/prisma";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
+import type { GetServerSideProps } from "next/types";
+
 type FormData = {
   title: string;
   text: string;
@@ -117,7 +118,9 @@ const Home = ({ todos }: ITodos, session: ISessionProps) => {
       <Head>
         <title>ToDo - Fullstack</title>
       </Head>
-      <h1 className="text-center font-bold text-2xl mt-4" data-testid="heading">Todos</h1>
+      <h1 className="text-center font-bold text-2xl mt-4" data-testid="heading">
+        Todos
+      </h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -131,6 +134,7 @@ const Home = ({ todos }: ITodos, session: ISessionProps) => {
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
           className="border-2 rounded border-gray-600 p-1"
+          required
         />
         <textarea
           placeholder="Description"
@@ -147,7 +151,11 @@ const Home = ({ todos }: ITodos, session: ISessionProps) => {
       <div className="w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch">
         <ul>
           {todos?.map((todo) => (
-            <li key={todo.id} className="border-b border-gray-600 p-2">
+            <li
+              data-testid="todoList"
+              key={todo.id}
+              className="border-b border-gray-600 p-2"
+            >
               <div className="flex justify-between">
                 <div className="flex-1">
                   <h3 className="font-bold">{todo.title}</h3>

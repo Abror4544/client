@@ -1,7 +1,5 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import Providers from "next-auth/providers";
-import { NextApiRequest, NextApiResponse } from "next";
 
 export default NextAuth({
   providers: [
