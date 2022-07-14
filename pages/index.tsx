@@ -5,7 +5,12 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 import type { GetServerSideProps } from "next/types";
-import { Alert, AlertIcon, AlertTitle } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+} from "@chakra-ui/react";
 
 type FormData = {
   title: string;
@@ -28,13 +33,16 @@ interface ISessionProps {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const todos = await prisma.todo.findMany({
-    select: {
-      title: true,
-      text: true,
-      id: true,
-    },
-  });
+  async function getTodos() {
+    return await prisma.todo.findMany({
+      select: {
+        title: true,
+        text: true,
+        id: true,
+      },
+    });
+  }
+  const todos = await getTodos();
 
   const session = await getSession(context);
 
@@ -57,6 +65,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const Home = ({ todos }: ITodos, session: ISessionProps) => {
   const [form, setForm] = useState<FormData>({ title: "", text: "", id: "" });
+  const [errmsg, setErrMsg] = useState("");
 
   const router = useRouter();
 
@@ -73,8 +82,9 @@ const Home = ({ todos }: ITodos, session: ISessionProps) => {
           .then(() => {
             setForm({ title: "", text: "", id: "" });
             refreshData();
+            setErrMsg("");
           })
-          .catch((error) => alert(error?.response.data.message));
+          .catch((error) => setErrMsg(error?.response.data.message));
       } catch (error) {
         console.log(error);
       }
@@ -129,7 +139,7 @@ const Home = ({ todos }: ITodos, session: ISessionProps) => {
           e.preventDefault();
           handleSubmit(form);
         }}
-        className="w-auto min-w-[25%] max-w-min mx-auto space-y-6 flex flex-col items-stretch"
+        className="w-auto min-w-[25%] max-w-xs mx-auto space-y-6 flex flex-col items-stretch"
       >
         <input
           type="text"
@@ -149,9 +159,17 @@ const Home = ({ todos }: ITodos, session: ISessionProps) => {
         <button type="submit" className="bg-blue-500 text-white rounded p-1">
           Add +
         </button>
+
+        {errmsg && (
+          <Alert status="error">
+            <AlertIcon />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{errmsg}</AlertDescription>
+          </Alert>
+        )}
       </form>
 
-      <div className="w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch">
+      <div className="w-auto min-w-[25%] max-w-xs mt-20 mx-auto space-y-6 flex flex-col items-stretch">
         <ul>
           {todos?.map((todo) => (
             <li
