@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React from "react";
 import Head from "next/head";
 import Auth from "../components/Auth/Auth";
