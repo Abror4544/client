@@ -3,25 +3,10 @@ import { Box, Container, Flex, Text } from "@chakra-ui/react";
 import ColorModeSwitcher from "../ColorModeSwitcher/ColorModeSwitcher";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-
-interface IUser {
-  name: string;
-  email: string;
-}
-
-interface IProps {
-  user: IUser;
-  expires: string;
-  id: number;
-}
-
-export interface ISession {
-  session: IProps | null;
-}
+import { ISession } from "../../types";
 
 const Header = (session: ISession) => {
   const router = useRouter();
-
   return (
     <Box as="header">
       <Container maxW="container.lg">

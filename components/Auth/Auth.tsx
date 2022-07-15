@@ -61,9 +61,6 @@ const Auth = (csrfToken: IToken) => {
               <Stack spacing="5">
                 <PasswordField />
               </Stack>
-              <HStack justify="space-between">
-                <Checkbox defaultChecked>Remember me</Checkbox>
-              </HStack>
               <Stack spacing="6">
                 <Button
                   bg="blue"

@@ -4,7 +4,8 @@ export type FormData = {
   id: string;
 };
 
-export type TodosProps = {
+export type Props = {
+  session: IProps;
   todos: {
     id: string;
     title: string;
@@ -17,3 +18,18 @@ export type FormDataArr = {
   text: string;
   id: string;
 }[];
+
+export interface IUser {
+  name: string;
+  email: string;
+}
+
+export interface IProps {
+  user: IUser;
+  expires: string;
+  id: number;
+}
+
+export interface ISession {
+  session: IProps | null;
+}
