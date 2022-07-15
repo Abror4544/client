@@ -34,4 +34,16 @@ describe("PasswordField", () => {
 
     expect(offIcon).toBeInTheDocument();
   });
+
+  it("Shows correct icon when click at show password", () => {
+    const { container } = render(<PasswordField />);
+
+    const onIcon = getByTestId(container, "on");
+
+    const inputElement = getByTestId(container, "passInp");
+
+    fireEvent.click(onIcon);
+
+    expect(document.activeElement).toBe(inputElement);
+  });
 });

@@ -20,9 +20,7 @@ export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>(
     const mergeRef = useMergeRefs(inputRef, ref);
     const onClickReveal = () => {
       onToggle();
-      if (inputRef.current) {
-        inputRef.current.focus({ preventScroll: true });
-      }
+      inputRef?.current?.focus({ preventScroll: true });
     };
 
     return (
@@ -50,6 +48,7 @@ export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>(
             required
             type={isOpen ? "text" : "password"}
             autoComplete="current-password"
+            data-testid="passInp"
             {...props}
           />
         </InputGroup>

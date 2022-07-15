@@ -7,25 +7,40 @@ import {
   getByText,
   getAllByTestId,
   fireEvent,
+  screen,
+  getAllByText,
 } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Home from "./index";
+import Home, { getServerSideProps } from "./index";
 import userEvent from "@testing-library/user-event";
-import mockAxios from "axios";
+import { FormDataArr } from "../types";
+import { ParsedUrlQuery } from "querystring";
+import { GetServerSidePropsContext } from "next";
 
-const data = [{ id: "2", title: "Rest", text: "Take care" }];
+const data = [
+  { id: "2", title: "Rest", text: "Take care" },
+  { id: "5", title: "Hey", text: "Use it" },
+];
+const sessionData = {
+  id: 2,
+  expires: "2022-08-14T11:05:23.172Z",
+  user: {
+    name: "Abror",
+    email: "corporationsystems7@gmail.com",
+  },
+};
 
-const mockedAxios = mockAxios as jest.Mocked<typeof mockAxios>;
+jest.mock("axios");
 
 afterEach(cleanup);
 
 describe("Home", () => {
   it("Renders without crash", () => {
-    render(<Home todos={data} />);
+    render(<Home session={sessionData} todos={data} />);
   });
 
   it("Correct title", () => {
-    const { container } = render(<Home todos={data} />);
+    const { container } = render(<Home session={sessionData} todos={data} />);
 
     const h1 = getByTestId(container, "heading");
 
@@ -33,7 +48,7 @@ describe("Home", () => {
   });
 
   it("Correct working input", async () => {
-    const { container } = render(<Home todos={data} />);
+    const { container } = render(<Home session={sessionData} todos={data} />);
 
     const input = getByPlaceholderText(container, "Title");
 
@@ -45,7 +60,7 @@ describe("Home", () => {
   });
 
   it("Correct working textarea", async () => {
-    const { container } = render(<Home todos={data} />);
+    const { container } = render(<Home session={sessionData} todos={data} />);
 
     const textarea = getByPlaceholderText(container, "Description");
 
@@ -57,7 +72,7 @@ describe("Home", () => {
   });
 
   it("Correct working add button", async () => {
-    const { container } = render(<Home todos={data} />);
+    const { container } = render(<Home session={sessionData} todos={data} />);
 
     const button = getByText(container, "Add +");
 
@@ -67,29 +82,37 @@ describe("Home", () => {
   });
 
   it("Correct list", async () => {
-    const { container } = render(<Home todos={data} />);
+    const { container } = render(<Home session={sessionData} todos={data} />);
 
     const list = getAllByTestId(container, "todoList");
 
-    expect(list.length).toBe(1);
+    expect(list.length).toBe(2);
   });
 
   it("Edit button", async () => {
-    const { container } = render(<Home todos={data} />);
+    const { container } = render(<Home session={sessionData} todos={data} />);
 
-    expect(getByText(container, "Edit")).toBeInTheDocument();
+    const btn = getAllByText(container, "Edit");
+
+    fireEvent.click(btn[0]);
+
+    expect(btn).toHaveLength(2);
   });
 
   it("Edit button functionality", () => {
-    const { container } = render(<Home todos={data} />);
+    const { container } = render(<Home session={sessionData} todos={data} />);
 
-    const editBtn = getByText(container, "Edit");
+    const editBtn = getAllByText(container, "Edit");
 
     const input = getByTestId(container, "testInput");
 
     const textarea = getByTestId(container, "testTextarea");
 
-    fireEvent.click(editBtn);
+    const button = getByText(container, "Add +");
+
+    fireEvent.click(editBtn[0]);
+
+    expect(button.textContent).toBe("Change");
 
     expect(input).toHaveValue(data[0].title);
 
@@ -97,22 +120,46 @@ describe("Home", () => {
   });
 
   it("Delete button", async () => {
-    const { container } = render(<Home todos={data} />);
+    const { container } = render(<Home session={sessionData} todos={data} />);
 
-    expect(getByText(container, "X")).toBeInTheDocument();
+    expect(getAllByText(container, "X")).toHaveLength(2);
   });
 
   it("Delete button functionality", async () => {
-    const { container } = render(<Home todos={data} />);
+    const deleteItem = (arr: FormDataArr) => arr.pop();
 
-    const deleteBtn = getByText(container, "X");
+    const { container, unmount } = render(
+      <Home session={sessionData} todos={data} />
+    );
 
-    const listItem = getByTestId(container, "todoList");
+    const deleteBtn = getAllByText(container, "X");
 
-    fireEvent.click(deleteBtn);
+    deleteBtn[0]?.addEventListener("click", () => deleteItem(data));
 
-    expect(listItem).not.toBeInTheDocument();
+    fireEvent.click(deleteBtn[0]);
 
-    expect(data).toHaveLength(0);
+    unmount();
+
+    const { rerender } = render(<Home session={sessionData} todos={data} />);
+
+    rerender(<Home session={sessionData} todos={data} />);
+
+    expect(screen.getAllByTestId("todoList")).toHaveLength(1);
+
+    expect(data).toHaveLength(1);
+  });
+
+  it("Should return waiting data", async () => {
+    const context = {
+      params: { id: "/" } as ParsedUrlQuery,
+    };
+
+    const response = await getServerSideProps(
+      context as GetServerSidePropsContext
+    );
+
+    const resCompare = JSON.parse(JSON.stringify(response));
+
+    expect(resCompare.props.todos).toBe(null);
   });
 });
