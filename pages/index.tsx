@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { prisma } from "../lib/prisma";
 import Head from "next/head";
 import axios from "axios";
@@ -53,16 +53,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 };
-
 const Home = ({ session, todos }: Props) => {
   const [form, setForm] = useState<FormData>({
     title: "",
     text: "",
     id: "",
   });
+
   const [errmsg, setErrMsg] = useState("");
+
   const [load, setLoad] = useState(false);
+
   const [btnText, setText] = useState("Add +");
+
   const router = useRouter();
 
   const refreshData = () => {

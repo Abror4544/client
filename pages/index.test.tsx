@@ -79,6 +79,8 @@ describe("Home", () => {
     await userEvent.click(button);
 
     expect(button).toBeInTheDocument();
+
+    expect(button).toBeDisabled();
   });
 
   it("Correct list", async () => {
