@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { BaseSyntheticEvent, useState } from "react";
 import { prisma } from "../lib/prisma";
 import Head from "next/head";
 import axios from "axios";
@@ -24,6 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         title: true,
         text: true,
         id: true,
+        done: true,
       },
     });
 
@@ -53,11 +54,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 };
+
 const Home = ({ session, todos }: Props) => {
   const [form, setForm] = useState<FormData>({
     title: "",
     text: "",
     id: "",
+    done: "",
   });
 
   const [errmsg, setErrMsg] = useState("");
@@ -65,11 +68,18 @@ const Home = ({ session, todos }: Props) => {
   const [load, setLoad] = useState(false);
 
   const [btnText, setText] = useState("Add +");
-
   const router = useRouter();
 
   const refreshData = () => {
     router.replace(router.asPath);
+  };
+
+  const handleDone = (e: BaseSyntheticEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    e.target.classList.toggle(styles.done);
+    console.log(e.target);
   };
 
   async function run(data: FormData) {
@@ -81,7 +91,7 @@ const Home = ({ session, todos }: Props) => {
         axios
           .post("http://localhost:3000/api/create", data)
           .then(() => {
-            setForm({ title: "", text: "", id: "" });
+            setForm({ title: "", text: "", id: "", done: "" });
             refreshData();
             setErrMsg("");
             setLoad(false);
@@ -112,7 +122,7 @@ const Home = ({ session, todos }: Props) => {
       axios
         .patch(`http://localhost:3000/api/todo/${data.id}`, data)
         .then(() => {
-          setForm({ title: "", text: "", id: "" });
+          setForm({ title: "", text: "", id: "", done: "" });
           setLoad(false);
           refreshData();
           setText("Add +");
@@ -123,7 +133,12 @@ const Home = ({ session, todos }: Props) => {
   }
 
   const edit = (data: FormData) => {
-    setForm({ title: data.title, text: data.text, id: data.id });
+    setForm({
+      title: data.title,
+      text: data.text,
+      id: data.id,
+      done: data.done,
+    });
     setText("Change");
   };
 
@@ -196,10 +211,22 @@ const Home = ({ session, todos }: Props) => {
             <li
               data-testid="todoList"
               key={todo.id}
-              className="border-b border-gray-600 p-2"
+              className={`border-b border-gray-600 p-2 ${styles.todo__item} ${
+                todo.done ? styles.done : ""
+              }`}
             >
               <div className="flex justify-between">
-                <div className="flex-1">
+                <div
+                  className="flex-1"
+                  onClick={(e) => {
+                    run({
+                      title: todo.title,
+                      text: todo.text,
+                      id: todo.id,
+                      done: todo.done ? "" : "Yes",
+                    });
+                  }}
+                >
                   <h3 className="font-bold">{todo.title}</h3>
                   <p className="text-sm">{todo.text}</p>
                 </div>

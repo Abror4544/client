@@ -6,3 +6,21 @@
     opacity: 0.5;
   }
 }
+
+.todo__item {
+  transition: 0.5s;
+  cursor: pointer;
+  &:hover {
+    h3,
+    p {
+      text-decoration: line-through;
+    }
+  }
+
+  &.done {
+    h3,
+    p {
+      text-decoration: line-through !important;
+    }
+  }
+}

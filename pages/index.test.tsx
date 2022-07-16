@@ -18,8 +18,8 @@ import { ParsedUrlQuery } from "querystring";
 import { GetServerSidePropsContext } from "next";
 
 const data = [
-  { id: "2", title: "Rest", text: "Take care" },
-  { id: "5", title: "Hey", text: "Use it" },
+  { id: "2", title: "Rest", text: "Take care", done: "" },
+  { id: "5", title: "Hey", text: "Use it", done: "" },
 ];
 const sessionData = {
   id: 2,

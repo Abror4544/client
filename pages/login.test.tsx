@@ -3,7 +3,6 @@ import { cleanup, render } from "@testing-library/react";
 import Login, { getServerSideProps } from "./login";
 import { GetServerSidePropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
-//import { getCsrfToken } from "next-auth/react";
 
 afterEach(cleanup);
 

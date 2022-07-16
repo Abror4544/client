@@ -14,7 +14,7 @@ export default async function handler(
 
     res.json(todo);
   } else if (req.method === "PATCH") {
-    const { title, text } = req.body;
+    const { title, text, done } = req.body;
 
     try {
       await prisma.todo.update({
@@ -22,6 +22,7 @@ export default async function handler(
         data: {
           title,
           text,
+          done,
         },
       });
 

@@ -2,6 +2,7 @@ export type FormData = {
   title: string;
   text: string;
   id: string;
+  done: string;
 };
 
 export type Props = {
@@ -10,6 +11,7 @@ export type Props = {
     id: string;
     title: string;
     text: string;
+    done: string;
   }[];
 };
 
@@ -17,6 +19,7 @@ export type FormDataArr = {
   title: string;
   text: string;
   id: string;
+  done: string;
 }[];
 
 export interface IUser {

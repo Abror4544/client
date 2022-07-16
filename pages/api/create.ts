@@ -5,7 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { title, text } = req.body;
+  const { title, text, done } = req.body;
 
   if (title !== "") {
     try {
@@ -13,6 +13,7 @@ export default async function handler(
         data: {
           title,
           text,
+          done,
         },
       });
 
