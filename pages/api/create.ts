@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma";
+// eslint-disable-next-line import/no-unresolved
 import { NextApiRequest, NextApiResponse } from "next/types";
 
 export default async function handler(

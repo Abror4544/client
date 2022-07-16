@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useState } from "react";
+import React, { useState } from "react";
 import { prisma } from "../lib/prisma";
 import Head from "next/head";
 import axios from "axios";
@@ -72,14 +72,6 @@ const Home = ({ session, todos }: Props) => {
 
   const refreshData = () => {
     router.replace(router.asPath);
-  };
-
-  const handleDone = (e: BaseSyntheticEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    e.target.classList.toggle(styles.done);
-    console.log(e.target);
   };
 
   async function run(data: FormData) {
@@ -218,7 +210,7 @@ const Home = ({ session, todos }: Props) => {
               <div className="flex justify-between">
                 <div
                   className="flex-1"
-                  onClick={(e) => {
+                  onClick={() => {
                     run({
                       title: todo.title,
                       text: todo.text,
