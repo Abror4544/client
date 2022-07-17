@@ -4,6 +4,7 @@ import Login, { getServerSideProps } from "./login";
 import { GetServerSidePropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 import "@testing-library/jest-dom";
+import { expect } from "@jest/globals";
 
 afterEach(cleanup);
 
