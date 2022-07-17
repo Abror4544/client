@@ -38,7 +38,7 @@ const Auth = (csrfToken: IToken) => {
           borderRadius={{ base: "none", sm: "xl" }}
         >
           <form
-            action="http://localhost:3000/api/auth/callback/credentials"
+            action="https://fullstacktd.netlify.app/api/auth/callback/credentials"
             method="POST"
           >
             <Input type="hidden" name="csrfToken" value={csrfToken.csrfToken} />
