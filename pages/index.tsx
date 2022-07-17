@@ -98,11 +98,12 @@ const Home = ({ session, todos }: Props) => {
   async function deleteTodo(id: string) {
     try {
       setLoad(true);
-      axios.delete(`https://fullstacktd.netlify.app/api/todo/${id}`).then(() => {
-        refreshData();
-
-        setLoad(false);
-      });
+      axios
+        .delete(`https://fullstacktd.netlify.app/api/todo/${id}`)
+        .then(() => {
+          refreshData();
+          setLoad(false);
+        });
     } catch (error) {
       console.log(error);
     }
