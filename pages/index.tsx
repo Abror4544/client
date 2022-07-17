@@ -81,7 +81,7 @@ const Home = ({ session, todos }: Props) => {
     } else {
       try {
         axios
-          .post("http://localhost:3000/api/create", data)
+          .post("https://fullstacktd.netlify.app/api/create", data)
           .then(() => {
             setForm({ title: "", text: "", id: "", done: "" });
             refreshData();
@@ -98,7 +98,7 @@ const Home = ({ session, todos }: Props) => {
   async function deleteTodo(id: string) {
     try {
       setLoad(true);
-      axios.delete(`http://localhost:3000/api/todo/${id}`).then(() => {
+      axios.delete(`https://fullstacktd.netlify.app/api/todo/${id}`).then(() => {
         refreshData();
 
         setLoad(false);
@@ -112,7 +112,7 @@ const Home = ({ session, todos }: Props) => {
     try {
       setLoad(true);
       axios
-        .patch(`http://localhost:3000/api/todo/${data.id}`, data)
+        .patch(`https://fullstacktd.netlify.app/api/todo/${data.id}`, data)
         .then(() => {
           setForm({ title: "", text: "", id: "", done: "" });
           setLoad(false);
