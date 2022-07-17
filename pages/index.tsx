@@ -20,6 +20,7 @@ import styles from "../styles/Home.module.scss";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const todos = await prisma.todo.findMany({
+      orderBy: [{ updatedAt: "asc" }],
       select: {
         title: true,
         text: true,
@@ -200,7 +201,7 @@ const Home = ({ session, todos }: Props) => {
 
       <div className="w-auto min-w-[25%] max-w-xs mt-20 mx-auto space-y-6 flex flex-col items-stretch">
         <ul className={styles.list}>
-          {todos?.reverse().map((todo) => (
+          {todos?.map((todo) => (
             <li
               data-testid="todoList"
               key={todo.id}

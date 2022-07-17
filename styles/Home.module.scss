@@ -18,6 +18,7 @@
   }
 
   &.done {
+    opacity: 0.5;
     h3,
     p {
       text-decoration: line-through !important;
