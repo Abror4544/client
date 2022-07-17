@@ -20,7 +20,7 @@ import styles from "../styles/Home.module.scss";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const todos = await prisma.todo.findMany({
-      orderBy: [{ updatedAt: "asc" }],
+      orderBy: [{ createdAt: "asc" }],
       select: {
         title: true,
         text: true,
