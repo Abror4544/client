@@ -199,8 +199,8 @@ const Home = ({ session, todos }: Props) => {
       </form>
 
       <div className="w-auto min-w-[25%] max-w-xs mt-20 mx-auto space-y-6 flex flex-col items-stretch">
-        <ul>
-          {todos?.map((todo) => (
+        <ul className={styles.list}>
+          {todos?.reverse().map((todo) => (
             <li
               data-testid="todoList"
               key={todo.id}

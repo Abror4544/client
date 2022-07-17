@@ -116,9 +116,9 @@ describe("Home", () => {
 
     expect(button.textContent).toBe("Change");
 
-    expect(input).toHaveValue(data[0].title);
+    expect(input).toHaveValue(data[data.length - 1].title);
 
-    expect(textarea).toHaveValue(data[0].text);
+    expect(textarea).toHaveValue(data[data.length - 1].text);
   });
 
   it("Delete button", async () => {
