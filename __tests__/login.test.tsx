@@ -1,10 +1,9 @@
 import React from "react";
 import { cleanup, render } from "@testing-library/react";
-import Login, { getServerSideProps } from "./login";
+import Login, { getServerSideProps } from "../pages/login";
 import { GetServerSidePropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 import "@testing-library/jest-dom";
-import { expect } from "@jest/globals";
 
 afterEach(cleanup);
 

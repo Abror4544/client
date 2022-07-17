@@ -9,7 +9,6 @@ import "@testing-library/jest-dom";
 import Header from "./Header";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { expect } from "@jest/globals";
 
 jest.mock("next-auth/react");
 

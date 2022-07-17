@@ -7,7 +7,6 @@ import {
 } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { PasswordField } from "./PasswordField";
-import { expect } from "@jest/globals";
 
 afterEach(cleanup);
 

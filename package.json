@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "eslint --ext .ts,.tsx pages --fix",
     "postinstall": "prisma generate",
-    "test": "jest --env=jsdom",
-    "prepare": "husky install"
+    "test": "jest --env=jsdom"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.2.3",
