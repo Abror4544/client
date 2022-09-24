@@ -1,4 +1,4 @@
-export type FormData = {
+export type IFormProps = {
   title: string;
   text: string;
   id: string;
@@ -7,20 +7,8 @@ export type FormData = {
 
 export type Props = {
   session: IProps;
-  todos: {
-    id: string;
-    title: string;
-    text: string;
-    done: string;
-  }[];
+  todos: IFormProps[];
 };
-
-export type FormDataArr = {
-  title: string;
-  text: string;
-  id: string;
-  done: string;
-}[];
 
 export interface IUser {
   name: string;

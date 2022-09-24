@@ -28,9 +28,9 @@ export default async function handler(
 
       res.status(200).json({ message: "Todo Updated!" });
     } catch (error) {
-      console.log("Failed!");
+      console.error("Failed!");
     }
   } else {
-    console.log("No no go back!");
+    console.error("No no go back!");
   }
 }

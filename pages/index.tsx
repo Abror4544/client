@@ -9,8 +9,9 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
+  Flex,
 } from "@chakra-ui/react";
-import { FormData, Props } from "../types";
+import { IFormProps, Props } from "../types";
 import { useRouter } from "next/router";
 import Loader from "../components/Loader/Loader";
 import Header from "../components/Header/Header";
@@ -21,7 +22,7 @@ import { useKeyPress } from "../hooks/useKeyPress";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const todos = await prisma.todo.findMany({
-      orderBy: [{ createdAt: "desc", done: "desc" }],
+      orderBy: { createdAt: "desc" },
       select: {
         title: true,
         text: true,
@@ -58,7 +59,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Home = ({ session, todos }: Props) => {
-  const [form, setForm] = useState<FormData>({
+  const [form, setForm] = useState<IFormProps>({
     title: "",
     text: "",
     id: "",
@@ -78,7 +79,7 @@ const Home = ({ session, todos }: Props) => {
     router.replace(router.asPath);
   };
 
-  async function run(data: FormData) {
+  async function run(data: IFormProps) {
     setLoad(true);
     if (data.id) {
       updateTodo(data);
@@ -94,7 +95,7 @@ const Home = ({ session, todos }: Props) => {
           })
           .catch((error) => setErrMsg(error?.response.data.message));
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   }
@@ -109,11 +110,11 @@ const Home = ({ session, todos }: Props) => {
           setLoad(false);
         });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
-  async function updateTodo(data: FormData) {
+  async function updateTodo(data: IFormProps) {
     try {
       setLoad(true);
       axios
@@ -125,11 +126,11 @@ const Home = ({ session, todos }: Props) => {
           setText("Add +");
         });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
-  const edit = (data: FormData) => {
+  const edit = (data: IFormProps) => {
     setForm({
       title: data.title,
       text: data.text,
@@ -139,11 +140,11 @@ const Home = ({ session, todos }: Props) => {
     setText("Change");
   };
 
-  const handleSubmit = async (data: FormData) => {
+  const handleSubmit = async (data: IFormProps) => {
     try {
       run(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -201,49 +202,100 @@ const Home = ({ session, todos }: Props) => {
           </Alert>
         )}
       </form>
-
-      <div className="w-auto min-w-[25%] max-w-xs mt-20 mx-auto space-y-6 flex flex-col items-stretch">
-        <ul className={styles.list}>
-          {todos?.map((todo) => (
-            <li
-              data-testid="todoList"
-              key={todo.id}
-              className={`border-b border-gray-600 p-2 ${styles.todo__item} ${
-                todo.done ? styles.done : ""
-              }`}
-            >
-              <div className="flex justify-between">
-                <div
-                  className="flex-1"
-                  onClick={() => {
-                    run({
-                      title: todo.title,
-                      text: todo.text,
-                      id: todo.id,
-                      done: todo.done ? "" : "Yes",
-                    });
-                  }}
-                >
-                  <h3 className="font-bold">{todo.title}</h3>
-                  <p className="text-sm">{todo.text}</p>
-                </div>
-                <button
-                  className="bg-blue-500 mr-2 ml-2 px-3 text-white rounded self-center"
-                  onClick={() => edit(todo)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="bg-red-500 px-3 text-white rounded self-center"
-                  onClick={() => deleteTodo(todo.id)}
-                >
-                  X
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <Flex justifyContent="center" gap="20px" py={8}>
+        <div className="min-w-[25%] space-y-6 flex flex-col items-stretch">
+          <p className="text-center font-bold text-lg mb-2">Process</p>
+          <ul className={styles.list}>
+            {todos?.map(
+              (todo) =>
+                !todo.done && (
+                  <li
+                    data-testid="todoList"
+                    key={todo.id}
+                    className={`border-b border-gray-600 p-2 ${
+                      styles.todo__item
+                    } ${todo.done ? styles.done : ""}`}
+                  >
+                    <div className="flex justify-between">
+                      <div
+                        className="flex-1"
+                        onClick={() => {
+                          run({
+                            title: todo.title,
+                            text: todo.text,
+                            id: todo.id,
+                            done: todo.done ? "" : "Yes",
+                          });
+                        }}
+                      >
+                        <h3 className="font-bold">{todo.title}</h3>
+                        <p className="text-sm">{todo.text}</p>
+                      </div>
+                      <button
+                        className="bg-blue-500 mr-2 ml-2 px-3 text-white rounded self-center"
+                        onClick={() => edit(todo)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="bg-red-500 px-3 text-white rounded self-center"
+                        onClick={() => deleteTodo(todo.id)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  </li>
+                )
+            )}
+          </ul>
+        </div>
+        <div className="min-w-[25%] space-y-6 flex flex-col items-stretch">
+          <p className="text-center font-bold text-lg mb-2">Done</p>
+          <ul className={styles.list}>
+            {todos?.map(
+              (todo) =>
+                todo.done && (
+                  <li
+                    data-testid="todoList"
+                    key={todo.id}
+                    className={`border-b border-gray-600 p-2 ${
+                      styles.todo__item
+                    } ${todo.done ? styles.done : ""}`}
+                  >
+                    <div className="flex justify-between">
+                      <div
+                        className="flex-1"
+                        onClick={() => {
+                          run({
+                            title: todo.title,
+                            text: todo.text,
+                            id: todo.id,
+                            done: todo.done ? "" : "Yes",
+                          });
+                        }}
+                      >
+                        <h3 className="font-bold">{todo.title}</h3>
+                        <p className="text-sm">{todo.text}</p>
+                      </div>
+                      <button
+                        className="bg-blue-500 mr-2 ml-2 px-3 text-white rounded self-center"
+                        onClick={() => edit(todo)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="bg-red-500 px-3 text-white rounded self-center"
+                        onClick={() => deleteTodo(todo.id)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  </li>
+                )
+            )}
+          </ul>
+        </div>
+      </Flex>
     </main>
   );
 };

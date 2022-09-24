@@ -13,7 +13,7 @@ import {
 import "@testing-library/jest-dom";
 import Home, { getServerSideProps } from "../pages/index";
 import userEvent from "@testing-library/user-event";
-import { FormDataArr } from "../types";
+import { IFormProps } from "../types";
 import { ParsedUrlQuery } from "querystring";
 import { GetServerSidePropsContext } from "next";
 
@@ -128,7 +128,7 @@ describe("Home", () => {
   });
 
   it("Delete button functionality", async () => {
-    const deleteItem = (arr: FormDataArr) => arr.pop();
+    const deleteItem = (arr: IFormProps[]) => arr.pop();
 
     const { container, unmount } = render(
       <Home session={sessionData} todos={data} />

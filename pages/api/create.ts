@@ -20,7 +20,7 @@ export default async function handler(
 
       res.status(200).json({ message: "Todo Created!" });
     } catch (error) {
-      console.log("Failed!");
+      console.error("Failed!");
     }
   } else {
     res.status(400).json({ message: "Title can't be empty!" });
