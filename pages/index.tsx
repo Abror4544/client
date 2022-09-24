@@ -206,7 +206,7 @@ const Home = ({ session, todos }: Props) => {
         justifyContent="center"
         gap="20px"
         py={8}
-        className="mobile:flex-col"
+        className="max-w-[70%] m-auto tabletMini:max-w-full mobile:flex-col"
       >
         <div className="w-[48%] space-y-6 flex flex-col items-stretch mobile:w-full">
           <p className="text-center font-bold text-lg mb-2">Process</p>
