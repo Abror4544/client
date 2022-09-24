@@ -2,7 +2,6 @@
 import {
   Box,
   Button,
-  Center,
   Container,
   FormControl,
   FormLabel,
@@ -12,7 +11,6 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import * as React from "react";
 import { IToken } from "../../pages/login";
 import { PasswordField } from "../PasswordField/PasswordField";
@@ -77,9 +75,6 @@ const Auth = (csrfToken: IToken) => {
           </form>
         </Box>
       </Stack>
-      <Center mt="25" color="blue" textTransform="uppercase">
-        <Link href="/">Home</Link>
-      </Center>
     </Container>
   );
 };

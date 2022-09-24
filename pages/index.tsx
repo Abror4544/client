@@ -16,11 +16,12 @@ import Loader from "../components/Loader/Loader";
 import Header from "../components/Header/Header";
 
 import styles from "../styles/Home.module.scss";
+import { useKeyPress } from "../hooks/useKeyPress";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const todos = await prisma.todo.findMany({
-      orderBy: [{ createdAt: "desc" }],
+      orderBy: [{ createdAt: "desc", done: "desc" }],
       select: {
         title: true,
         text: true,
@@ -70,6 +71,8 @@ const Home = ({ session, todos }: Props) => {
 
   const [btnText, setText] = useState("Add +");
   const router = useRouter();
+
+  useKeyPress(() => handleSubmit(form), ["NumpadEnter"]);
 
   const refreshData = () => {
     router.replace(router.asPath);
@@ -157,8 +160,8 @@ const Home = ({ session, todos }: Props) => {
         Todos
       </h1>
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
+        onSubmit={(event) => {
+          event.preventDefault();
           handleSubmit(form);
         }}
         className="w-auto min-w-[25%] max-w-xs mx-auto space-y-6 flex flex-col items-stretch"
