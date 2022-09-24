@@ -202,8 +202,13 @@ const Home = ({ session, todos }: Props) => {
           </Alert>
         )}
       </form>
-      <Flex justifyContent="center" gap="20px" py={8}>
-        <div className="min-w-[25%] space-y-6 flex flex-col items-stretch">
+      <Flex
+        justifyContent="center"
+        gap="20px"
+        py={8}
+        className="mobile:flex-col"
+      >
+        <div className="w-[48%] space-y-6 flex flex-col items-stretch mobile:w-full">
           <p className="text-center font-bold text-lg mb-2">Process</p>
           <ul className={styles.list}>
             {todos?.map(
@@ -249,7 +254,7 @@ const Home = ({ session, todos }: Props) => {
             )}
           </ul>
         </div>
-        <div className="min-w-[25%] space-y-6 flex flex-col items-stretch">
+        <div className="w-[48%] space-y-6 flex flex-col items-stretch mobile:w-full">
           <p className="text-center font-bold text-lg mb-2">Done</p>
           <ul className={styles.list}>
             {todos?.map(
