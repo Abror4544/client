@@ -73,8 +73,6 @@ const Home = ({ session, todos }: Props) => {
   const [btnText, setText] = useState("Add +");
   const router = useRouter();
 
-  useKeyPress(() => handleSubmit(form), ["NumpadEnter"]);
-
   const refreshData = () => {
     router.replace(router.asPath);
   };
@@ -93,7 +91,10 @@ const Home = ({ session, todos }: Props) => {
             setErrMsg("");
             setLoad(false);
           })
-          .catch((error) => setErrMsg(error?.response.data.message));
+          .catch((error) => {
+            setErrMsg(error?.response.data.message);
+            setLoad(false);
+          });
       } catch (error) {
         console.error(error);
       }
@@ -147,6 +148,8 @@ const Home = ({ session, todos }: Props) => {
       console.error(error);
     }
   };
+
+  useKeyPress(() => handleSubmit(form), ["NumpadEnter"]);
 
   return (
     <main className={styles.main}>
