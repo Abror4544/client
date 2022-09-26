@@ -22,7 +22,7 @@ import { useKeyPress } from "../hooks/useKeyPress";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const todos = await prisma.todo.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: { updatedAt: "desc" },
       select: {
         title: true,
         text: true,
