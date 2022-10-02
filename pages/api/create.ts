@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   const { title, text, done } = req.body;
 
-  if (title !== "") {
+  if (title.trim() !== "") {
     try {
       await prisma.todo.create({
         data: {

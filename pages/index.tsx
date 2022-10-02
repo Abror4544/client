@@ -17,7 +17,6 @@ import Loader from "../components/Loader/Loader";
 import Header from "../components/Header/Header";
 
 import styles from "../styles/Home.module.scss";
-import { useKeyPress } from "../hooks/useKeyPress";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
@@ -67,7 +66,6 @@ const Home = ({ session, todos }: Props) => {
   });
 
   const [errmsg, setErrMsg] = useState("");
-
   const [load, setLoad] = useState(false);
 
   const [btnText, setText] = useState("Add +");
@@ -82,9 +80,11 @@ const Home = ({ session, todos }: Props) => {
     if (data.id) {
       updateTodo(data);
     } else {
+      console.log(data, "func run");
+
       try {
         axios
-          .post("https://fullstacktd.netlify.app/api/create", data)
+          .post("/api/create", data)
           .then(() => {
             setForm({ title: "", text: "", id: "", done: "" });
             refreshData();
@@ -104,12 +104,10 @@ const Home = ({ session, todos }: Props) => {
   async function deleteTodo(id: string) {
     try {
       setLoad(true);
-      axios
-        .delete(`https://fullstacktd.netlify.app/api/todo/${id}`)
-        .then(() => {
-          refreshData();
-          setLoad(false);
-        });
+      axios.delete(`/api/todo/${id}`).then(() => {
+        refreshData();
+        setLoad(false);
+      });
     } catch (error) {
       console.error(error);
     }
@@ -118,14 +116,12 @@ const Home = ({ session, todos }: Props) => {
   async function updateTodo(data: IFormProps) {
     try {
       setLoad(true);
-      axios
-        .patch(`https://fullstacktd.netlify.app/api/todo/${data.id}`, data)
-        .then(() => {
-          setForm({ title: "", text: "", id: "", done: "" });
-          setLoad(false);
-          refreshData();
-          setText("Add +");
-        });
+      axios.patch(`/api/todo/${data.id}`, data).then(() => {
+        setForm({ title: "", text: "", id: "", done: "" });
+        setLoad(false);
+        refreshData();
+        setText("Add +");
+      });
     } catch (error) {
       console.error(error);
     }
@@ -142,14 +138,14 @@ const Home = ({ session, todos }: Props) => {
   };
 
   const handleSubmit = async (data: IFormProps) => {
+    console.log(data, "func handle");
+
     try {
       run(data);
     } catch (error) {
       console.error(error);
     }
   };
-
-  useKeyPress(() => handleSubmit(form), ["NumpadEnter"]);
 
   return (
     <main className={styles.main}>
@@ -183,7 +179,10 @@ const Home = ({ session, todos }: Props) => {
         <textarea
           placeholder="Description"
           value={form.text}
-          onChange={(e) => setForm({ ...form, text: e.target.value })}
+          onChange={(e) => {
+            e.preventDefault();
+            setForm({ ...form, text: e.target.value });
+          }}
           data-testid="testTextarea"
           className="border-2 rounded border-gray-600 p-1"
         />

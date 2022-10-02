@@ -35,10 +35,7 @@ const Auth = (csrfToken: IToken) => {
           boxShadow={{ base: "none", sm: useColorModeValue("md", "md-dark") }}
           borderRadius={{ base: "none", sm: "xl" }}
         >
-          <form
-            action="https://fullstacktd.netlify.app/api/auth/callback/credentials"
-            method="POST"
-          >
+          <form action="/api/auth/callback/credentials" method="POST">
             <Input type="hidden" name="csrfToken" value={csrfToken.csrfToken} />
 
             <Stack spacing="6">
